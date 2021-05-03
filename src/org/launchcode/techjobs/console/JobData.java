@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by LaunchCode
@@ -34,12 +35,15 @@ public class JobData {
         loadData();
 
         ArrayList<String> values = new ArrayList<>();
+        //Create an ArrayList named values
 
         for (HashMap<String, String> row : allJobs) {
             String aValue = row.get(field);
+            //Use the search term to find the HashMap key with that name and put it's value in the aValue variable
 
             if (!values.contains(aValue)) {
                 values.add(aValue);
+                //If the value doesn't exist in the values ArrayList, add to it.
             }
         }
 
@@ -66,23 +70,51 @@ public class JobData {
      * @return List of all jobs matching the criteria
      */
     public static ArrayList<HashMap<String, String>> findByColumnAndValue(String column, String value) {
+        //Takes in a column string as an argument to search and takes in a value string as an argument to search
 
         // load data, if not already loaded
         loadData();
 
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        //Declares a HashMap named jobs
 
         for (HashMap<String, String> row : allJobs) {
+            //For each HashMap in "allJobs"...
 
             String aValue = row.get(column);
+            //Search the key names of each HashMap in "allJobs" using the String column argument and add the corresponding value to "aValue"
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
+                //If the value in aValue matches the String argument value then add the key name and value to the HashMap jobs
             }
         }
 
         return jobs;
     }
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+
+        loadData();
+
+        ArrayList<HashMap<String, String>> coulombList = new ArrayList<>();
+
+        for (HashMap<String, String> rows : allJobs) {
+
+            for (String row : rows.values()) {
+
+                if (row.toLowerCase().contains(value.toLowerCase()) && !coulombList.contains(rows)) {
+                    coulombList.add(rows);
+                }
+
+            }
+
+        }
+
+        return coulombList;
+
+    }
+
 
     /**
      * Read in data from a CSV file and store it in a list

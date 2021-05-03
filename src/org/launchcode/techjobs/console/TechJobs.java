@@ -2,6 +2,7 @@ package org.launchcode.techjobs.console;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -11,7 +12,7 @@ public class TechJobs {
 
     private static Scanner in = new Scanner(System.in);
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
 
         // Initialize our field map with key/name pairs
         HashMap<String, String> columnChoices = new HashMap<>();
@@ -61,7 +62,7 @@ public class TechJobs {
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not yet implemented.");
+                    printJobs(JobData.findByValue(searchTerm));
                 } else {
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                 }
@@ -72,15 +73,18 @@ public class TechJobs {
     // ﻿Returns the key of the selected item from the choices Dictionary
     private static String getUserSelection(String menuHeader, HashMap<String, String> choices) {
 
-        Integer choiceIdx;
+        Integer choiceIdx; //This means "choice index". This holds the number that you input.
         Boolean validChoice = false;
         String[] choiceKeys = new String[choices.size()];
+        /*
+        This declares an fixed size array, the length determined by the size of choices
+        */
 
         // Put the choices in an ordered structure so we can
         // associate an integer with each one
         Integer i = 0;
         for (String choiceKey : choices.keySet()) {
-            choiceKeys[i] = choiceKey;
+            choiceKeys[i] = choiceKey; //This puts the name of each key in choices in an increasing integer position of the array "choiceKeys"
             i++;
         }
 
@@ -91,6 +95,9 @@ public class TechJobs {
             // Print available choices
             for (Integer j = 0; j < choiceKeys.length; j++) {
                 System.out.println("" + j + " - " + choices.get(choiceKeys[j]));
+                /*
+                This associates an increasing integer number "j" with the respective integer position of each value in the choiceKeys array.
+                 */
             }
 
             choiceIdx = in.nextInt();
@@ -103,14 +110,35 @@ public class TechJobs {
                 validChoice = true;
             }
 
-        } while(!validChoice);
+        } while (!validChoice); //This executes if validChoice is true
 
-        return choiceKeys[choiceIdx];
+        return choiceKeys[choiceIdx]; //This uses the integer in choiceIdx to return the respective string value in the choiceKeys array
     }
 
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
 
-        System.out.println("printJobs is not implemented yet");
+        //System.out.println(someJobs.size());
+
+        if (someJobs.size() == 0) {
+
+            System.out.println("No jobs available at this time");
+
+        } else {
+
+            System.out.println("\nTotal amount of Jobs: " + someJobs.size() + "\n");
+
+            for (HashMap<String, String> job : someJobs) {
+
+                String formattedJobs = "";
+
+                for (Map.Entry<String, String> someJob : job.entrySet()) {
+                    formattedJobs += someJob.getKey() + ": " + someJob.getValue() + "\n";
+                }
+
+                System.out.println("*****\n" + formattedJobs + "*****\n");
+
+            }
+        }
     }
 }
