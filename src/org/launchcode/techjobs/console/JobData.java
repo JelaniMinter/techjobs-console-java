@@ -7,10 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -101,15 +98,30 @@ public class JobData {
 
         for (HashMap<String, String> rows : allJobs) {
 
-            for (String row : rows.values()) {
+            for (Map.Entry<String, String> keys : rows.entrySet()) {
+                String key = keys.getValue();
 
-                if (row.toLowerCase().contains(value.toLowerCase()) && !coulombList.contains(rows)) {
+                if (key.equalsIgnoreCase(value) && !coulombList.contains(rows)) {
                     coulombList.add(rows);
                 }
 
             }
 
         }
+
+//        for (HashMap<String, String> rows : allJobs) {
+//
+//            for (String key : rows.keySet()) {
+//
+//                if (rows.get(key).toLowerCase() == value.toLowerCase() && !coulombList.contains(rows)) {
+//                    coulombList.add(rows);
+//
+////                    row.toLowerCase().contains(value.toLowerCase())
+//                }
+//
+//            }
+//
+//        }
 
         return coulombList;
 
